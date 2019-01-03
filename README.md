@@ -1,6 +1,7 @@
 Ivan PosolLife
+========================
 Senior Web Developer
-
+========================
 
 Areas Of Profession
 ========================
