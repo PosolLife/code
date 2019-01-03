@@ -45,7 +45,7 @@ Areas Of Profession
 
 Work experience
 ========================
-> Freelance (2010 - October 2011), Web developer
+	> Freelance (2010 - October 2011), Web developer
 	I working at different sites like a Freelancer
 	--------
 
@@ -62,7 +62,7 @@ Work experience
 	website: www.edecree.com
 	--------
 
-	> Loom Analytics (August 2015 - Present), Senior Web Developer
+	> Loom Analytics (August 2015 - september 2017), Senior Web Developer
 	- Database design. - Working with Amazon services  (S3, RDS etc.)-
 	Transfer of projects from one host to another hosting (mostly Amazon)-
 	Management of the development team (code inspection standards, training,
@@ -77,7 +77,7 @@ Work experience
 	tool, PHPExce, Bootstrap, Jquery, SerfSelect
 	--------
 
-	> Serfcompany (December 2013 - июнь 2018), Senior Web Developer
+	> Serfcompany (December 2013 - June 2018), Senior Web Developer
 	- Database design. - Working with Amazon services  (S3, RDS etc.)-
 	Transfer of projects from one host to another hosting (mostly Amazon)-
 	Management of the development team (code inspection standards, training,
