@@ -1,7 +1,7 @@
 Ivan PosolLife
 ========================
-Senior Web Developer
-========================
+Senior Web Developer 
+
 
 Areas Of Profession
 ========================
@@ -94,7 +94,7 @@ Work experience
 	Visual communication: Lucidchart.Related system
 	development: Apache Solr.Version control system:Git, SVN.
 	
-	Education
+Education
 ========================
 	> Railway facilities and track facilities (2005 - 2010), Kharkov State Academy of Railway Transport
 
