@@ -1,0 +1,377 @@
+<?php
+
+$this->headTitle($title);
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', '/update-user');
+
+$customer = $this->layout()->user['customer'];
+
+?>
+
+<!-- Customer profile form -->
+<div id="user-page">
+  <?php echo $this->form()->openTag($form); ?>
+
+  <!-- Message -->
+  <?php if (!empty($message)) { ?>
+  <h4 class="text-center no-margin success-label"><?= $message['messages'][0]; ?></h4>
+  <hr>
+  <?php } ?>
+
+  <!-- Navigation -->
+  <div class="pull-right profile-navigation">Jump to:&nbsp;
+    <a href="#" class="underline fw-600 clr-teal" data-scroll_to="personal">Personal</a>&nbsp;
+    <a href="#" class="underline fw-600 clr-purple" data-scroll_to="employment">Employment</a>&nbsp;
+    <a href="#" class="underline fw-600 clr-crimson" data-scroll_to="account">Account</a>
+  </div>
+  <br>
+
+  <div class="row">
+    <div class="col-xs-8">
+      <h4 id="section-personal" class="fw-700 clr-teal">Personal Information</h4>
+    </div>
+
+    <!-- Submit customer profile form button -->
+    <div class="col-md-2 col-xs-4 pull-right">
+      <?php echo $this->formSubmit($form->get("submit")->setAttributes(['class' => 'bkg-dark-blue submit-form'])); ?>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <!-- First name -->
+    <div class="col-md-6 col-xs-12 required">
+      <label><?php echo $form->get('firstName')->getLabel(); ?></label>
+      <?= $this->formText($form->get("firstName")->setAttributes([
+      'required' => true, 'value' => $customer->cust_fn, 'class' => 'form-control'
+      ])); ?>
+    </div>
+
+    <!-- Last name -->
+    <div class="col-md-6 col-xs-12 required">
+      <label><?php echo $form->get('lastName')->getLabel(); ?></label>
+      <?= $this->formText($form->get("lastName")->setAttributes([
+      'class'=> 'form-control', 'required' => true, 'value' => $customer->cust_ln
+      ])); ?>
+    </div>
+  </div>
+
+  <!-- Address -->
+  <div class="form-group">
+    <div class="col-xs-12">
+      <label><?php echo $form->get('streetAddress')->getLabel(); ?></label>
+      <?= $this->formText($form->get("streetAddress")->setAttributes([
+      'class' => 'form-control', 'value' => ($customer->street_address != null) ? $customer->street_address : ''
+      ])); ?>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <!-- Country -->
+    <div class="col-md-6 col-xs-12">
+      <label for="country"><?php echo $form->get('country')->getLabel(); ?></label>
+      <select name="country" id="country" class="form-control">
+        <?php if ($customer->country_id && $customer->country_id > 1) { ?>
+        <option value="-1" disabled>Country</option>
+        <?php } else { ?>
+        <option value="-1" disabled selected>Country</option>
+        <?php } ?>
+
+        <?php foreach ($this->countries as $id => $name) { ?>
+        <?php if ($id == $customer->country_id) { ?>
+        <option value="<?= $id; ?>" selected><?= $name; ?></option>
+        <?php } else { ?>
+        <option value="<?= $id; ?>"><?= $name; ?></option>
+        <?php } ?>
+        <?php } ?>
+      </select>
+    </div>
+
+    <!-- State -->
+    <div class="col-md-6 col-xs-12">
+      <label for="state"><?php echo $form->get('state')->getLabel(); ?></label>
+      <select name="state" id="state" class="form-control">
+        <?php if ($customer->state_id && $customer->state_id > 1) { ?>
+        <option value="-1" disabled>Province</option>
+        <?php } else { ?>
+        <option value="-1" disabled selected>Province</option>
+        <?php } ?>
+
+        <?php foreach ($this->states as $id => $name) { ?>
+        <?php if ($id == $customer->state_id) { ?>
+        <option value="<?= $id; ?>" selected><?= $name; ?></option>
+        <?php } else { ?>
+        <option value="<?= $id; ?>"><?= $name; ?></option>
+        <?php } ?>
+        <?php } ?>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <!-- City -->
+    <div class="col-md-6 col-xs-12">
+      <label for="city"><?php echo $form->get('city')->getLabel(); ?></label>
+      <select name="city" id="city" class="form-control">
+        <?php if ($customer->city_id && $customer->city_id > 1) { ?>
+        <option value="-1" disabled>City</option>
+        <?php } else { ?>
+        <option value="-1" disabled selected>City</option>
+        <?php } ?>
+
+        <?php foreach ($this->cities as $id => $name) { ?>
+        <?php if ($id == $customer->city_id) { ?>
+        <option value="<?= $id; ?>" selected><?= $name; ?></option>
+        <?php } else { ?>
+        <option value="<?= $id; ?>"><?= $name; ?></option>
+        <?php } ?>
+        <?php } ?>
+      </select>
+    </div>
+
+    <!-- Post code -->
+    <div class="col-md-6 col-xs-12">
+      <label><?php echo $form->get('postalCode')->getLabel(); ?></label>
+      <?= $this->formText($form->get("postalCode")->setAttributes([
+      'class' => 'form-control', 'value' => ($customer->postal != null) ? $customer->postal : ''
+      ])); ?>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <!-- Primary phone -->
+    <div class="col-md-6 col-xs-12">
+      <label><?php echo $form->get('PrimaryPhone')->getLabel(); ?></label>
+      <?= $this->formText($form->get("PrimaryPhone")->setAttributes([
+      'class' => 'form-control', 'value' => ($customer->prim_phone != null) ? $customer->prim_phone : ''
+      ])); ?>
+    </div>
+
+    <!-- Cell phone -->
+    <div class="col-md-6 col-xs-12">
+      <label><?php echo $form->get('CellPhone')->getLabel(); ?></label>
+      <?= $this->formText($form->get("CellPhone")->setAttributes([
+      'class' => 'form-control', 'value' => ($customer->cell_phone != null) ? $customer->cell_phone : ''
+      ])); ?>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <!-- Birthday -->
+    <div class="col-md-6 col-xs-12">
+      <label><?php echo $form->get('birthday')->getLabel(); ?></label>
+      <?= $this->formText($form->get("birthday")
+      ->setAttributes(['value' => ($customer->birthday) ?: '', 'class' => 'form-control'])); ?>
+    </div>
+
+    <!-- Gender -->
+    <div class="col-md-6 col-xs-12">
+      <label for="gender"><?php echo $form->get('gender')->getLabel(); ?></label>
+      <select name="gender" id="gender" class="form-control">
+        <?php if ($customer->gender && $customer->gender > 1) { ?>
+        <option value="-1" disabled>Gender</option>
+        <?php } else { ?>
+        <option value="-1" disabled selected>Gender</option>
+        <?php } ?>
+
+        <?php foreach ($this->genders as $id => $name) { ?>
+        <?php if ($id == $customer->gender) { ?>
+        <option value="<?= $id; ?>" selected><?= $name; ?></option>
+        <?php } else { ?>
+        <option value="<?= $id; ?>"><?= $name; ?></option>
+        <?php } ?>
+        <?php } ?>
+      </select>
+    </div>
+  </div>
+
+  <br>
+  <h4 id="section-employment" class="fw-700 clr-purple">Employment Information</h4>
+
+  <!-- Firm/Company -->
+  <div class="form-group">
+    <div class="col-xs-12">
+      <label><?php echo $form->get('firm')->getLabel(); ?></label>
+      <?= $this->formText($form->get('firm')->setAttributes([
+      'class' => 'form-control', 'value' => ($customer->company != null) ? $customer->company : ''
+      ])); ?>
+    </div>
+  </div>
+
+  <!-- Practice area -->
+  <div class="form-group">
+    <div class="col-md-12 col-xs-12">
+      <label>Practice Area</label>
+      <select name="procSubtypeList[]" placeholder="Practice Area" id="practice_area"
+              multiple="multiple" tabindex="-1" style="width: 100%;">
+        <option value="0" data-section="All Available Options">All Options Selected</option>
+        <?php foreach ($this->practiceArea as $option => $val) { ?>
+        <?php if ($option != 1) { ?>
+        <option value="<?php echo $option; ?>" data-section="Practice Area" data-index="1">
+          <?php echo $val; ?>
+        </option>
+        <?php } ?>
+        <?php } ?>
+      </select>
+    </div>
+  </div>
+
+  <!-- Industry -->
+  <div class="form-group">
+    <div class="col-md-6 col-xs-12">
+      <label for="industry"><?php echo $form->get('industry')->getLabel(); ?></label>
+      <select name="industry" id="industry" class="form-control toggle-next-disable">
+        <?php if ($customer->industry_id && $customer->industry_id > 0) { ?>
+        <option value="-1" disabled>Industry</option>
+        <?php } else { ?>
+        <option value="-1" disabled selected>Industry</option>
+        <?php } ?>
+
+        <?php foreach ($this->industries as $id => $name) { ?>
+        <?php if ($id == $customer->industry_id) { ?>
+        <option value="<?= $id; ?>" selected><?= $name; ?></option>
+        <?php } else { ?>
+        <option value="<?= $id; ?>"><?= $name; ?></option>
+        <?php } ?>
+        <?php } ?>
+      </select>
+    </div>
+
+    <?php
+    $industry = 'hidden';
+    if (!$customer->industry_id || $customer->industry_id == 1) {
+      if ($customer->industry_ot) {
+        $industry = $customer->industry_ot;
+      }
+    }
+    ?>
+
+    <div class="col-md-6 col-xs-12">
+      <label><?php echo $form->get('other_industry')->getLabel(); ?></label>
+      <?php echo $this->formText($form->get("other_industry")->setAttributes([
+      'disabled' => 'disabled', 'class' => 'form-control', 'value' => $customer->industry_ot
+      ])); ?>
+    </div>
+  </div>
+
+  <br>
+  <h4 id="section-account" class="fw-700 clr-crimson">Account Information</h4>
+
+  <!-- Email -->
+  <div class="form-group">
+    <div class="col-xs-12 required">
+      <label><?php echo $form->get('email')->getLabel(); ?></label>
+      <?= $this->formText($form->get("email")->setAttributes([
+      'class' => 'form-control', 'value' => ($customer->prim_email != null) ? $customer->prim_email : '',
+      'readonly' => true, 'required' => true])); ?>
+    </div>
+  </div>
+
+  <!-- Second Email -->
+  <div class="form-group">
+    <div class="col-xs-12">
+      <label><?php echo $form->get('secondEmail')->getLabel(); ?></label>
+      <?php echo $this->formText($form->get("secondEmail")->setAttributes([
+      'class' => 'form-control', 'value' => ($customer->sec_email != null) ? $customer->sec_email : ''
+      ])); ?>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <!-- Question -->
+    <div class="col-md-8 col-xs-12 required">
+      <label><?php echo $form->get('question')->getLabel(); ?></label>
+      <?php echo $this->formText($form->get("question")->setAttributes([
+      'class' => 'form-control', 'required' => true, 'readonly' => true,
+      'value' => ($customer->pwd_ques != null) ? $customer->pwd_ques : ''])); ?>
+    </div>
+
+    <div class="col-md-4 col-xs-12 text-right">
+      <label style="width: 100%;"></label>
+      <button class="btn btn-sm btn-primary change-question" data-toggle="modal"
+              data-target="#question-form">Change Secret Question
+      </button>
+    </div>
+  </div>
+
+  <!-- Referral source-->
+  <?php if (!$customer->referral_source_id) { ?>
+  <div class="form-group">
+    <div class="col-xs-12">
+      <label for="found"><?php echo $form->get('found')->getLabel(); ?></label>
+      <select name="found" id="found" class="form-control">
+        <option value="-1" disabled selected>Referral source</option>
+
+        <?php foreach ($this->referrals as $id => $name) { ?>
+        <option value="<?= $id; ?>"><?= $name; ?></option>
+        <?php } ?>
+      </select>
+    </div>
+  </div>
+  <?php } ?>
+
+  <div class="form-group">
+    <div class="col-xs-12">
+      <button class="btn btn-sm btn-primary change-password" data-toggle="modal"
+              data-target="#change-password-form">Change Password
+      </button>
+    </div>
+  </div>
+
+  <!-- Submit customer profile form button -->
+  <div class="form-group">
+    <div class="col-md-2 col-xs-4 pull-right">
+      <?php echo $this->formSubmit($form->get("submit")->setAttributes(['class' => 'bkg-dark-blue submit-form'])); ?>
+    </div>
+  </div>
+
+  <?php echo $this->form()->closeTag($form); ?>
+
+  <div class="form-group mt-20 pt-20 bt-2 border-crimson">
+    <button id=#show-delete-account-form" class="btn btn-sm btn-danger bkg-crimson"
+            data-target="#delete-account-form" data-toggle="modal">Delete</button>
+    <b class="ml-10 clr-crimson">Delete account (including all search history)</b>
+  </div>
+</div><!-- /user-page -->
+
+<!-- Modal window for changing password -->
+<?= $this->partial('customer/templates/forms/password-form'); ?>
+
+<!-- Modal window for changing secret question/answer -->
+<?= $this->partial('customer/templates/forms/secret-question-form'); ?>
+
+<!-- Modal window for changing password -->
+<?= $this->partial('customer/templates/forms/confirm-password-form'); ?>
+
+<!-- Modal window for deleting customer's account -->
+<?= $this->partial('customer/templates/forms/delete-account-form'); ?>
+
+<link href="/js/bootstrap/plugins/daterangepicker/daterangepicker-bs3.css"
+      media="screen" rel="stylesheet" type="text/css">
+
+<script src="/js/customer/profile.js<?= SITE_VERSION; ?>"></script>
+<script src="/js/serfSelect.js<?= SITE_VERSION; ?>"></script>
+<script src="/js/bootstrap/plugins/daterangepicker/moment.min.js"></script>
+<script src="/js/bootstrap/plugins/daterangepicker/daterangepicker.js"></script>
+
+<!-- "Jump to" navigation-->
+<script>
+  $(function () {
+    $('.profile-navigation a').click(function (e) {
+      e.preventDefault();
+
+      var scrollTo = $(this).attr('data-scroll_to');
+      $('html, body').animate({
+        scrollTop: $('#section-' + scrollTo).offset().top - 110
+      }, 300);
+    });
+
+    $('.change-question').click(function (e) {
+      e.preventDefault();
+    });
+
+    $('#show-delete-account-form').click(function (e) {
+      e.preventDefault();
+    });
+  });
+</script>

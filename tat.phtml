@@ -1,0 +1,193 @@
+<div class="left-body-cont result-wrapper">
+  <div class="row">
+    <!-- All judges header -->
+    <?= $this->partial('report/templates/dec-tat-all-judges'); ?>
+  </div>
+
+  <!-- Pagination -->
+  <?= $this->partial('report/templates/pagination', array('pr' => 'dt', 'total' => $this->totalCount)); ?>
+
+  <div class="result-table-wrapper mt-5 mb-10">
+    <table class="table table-bordered result-table result-table-header judge-list">
+      <thead>
+      <tr class="text-left">
+        <th class="decision-name sort-result" data-sort="judge-name">
+          <span>Judge or Master Name</span> <span id="dec-count"></span>
+          <i class="fa fa-caret-up"></i></th>
+        <th class="citation-number sort-result current-sort" data-sort="response-time">
+          <span>Average Response Time (Days)</span>
+          <i class="fa fa-caret-up"></i></th>
+        <th class="decision-date sort-result" data-sort="decision-number">
+          <span>Total Number of Decisions</span>
+          <i class="fa fa-caret-up"></i></th>
+      </tr>
+      </thead>
+    </table>
+
+    <table id="dt-result" class="table table-bordered result-table judge-list">
+      <?php if (empty($this->result)) { ?>
+      <tbody>
+        <tr>
+          <td colspan="3" class="text-center">There were no records found for your search criteria.</td>
+        </tr>
+      </tbody>
+      <?php } else { ?>
+        <?= $this->partial('report/templates/dec-tat-rows', array('result' => $this->result)); ?>
+      <?php } ?>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <?= $this->partial('report/templates/pagination', array('pr' => 'dt', 'total' => $this->totalCount)); ?>
+
+  <div class="row">
+    <div class="col-xs-12 mb-20 mt-10 text-left show-hide-next">
+      <i class="how-calc">+ How is this being calculated? (Click to expand/collapse)</i>
+    </div>
+
+    <div class="col-xs-12 hidden text-left mb-40">
+      For an individual decision, <b>‘turnaround time’</b> means the number of days that elapsed between
+      the date of the last hearing and the date that the decision was published. For instance,
+      if a hearing took place on January 1st and the decision was published on January 4th, the
+      turnaround time is three days. If a decision is published on the same day as the hearing,
+      the turnaround time is zero days.<br><br>
+
+      For some decisions, a hearing date may be missing (for instance, if the decision was heard
+      in writing and there is no record of the submission date). In those cases, the decision turnaround
+      time is unknown and is displayed in the table as ‘N/A’. Decisions with an N/A turnaround time
+      are not included in the average and median calculations.<br><br>
+
+      A judge’s average decision time is calculated by adding up all the decisions that have a
+      turnaround time value and dividing that total by the number of decisions. The median decision
+      time is calculated by sorting the decisions from shortest turnaround time to longest
+      turnaround time and finding the decision at the midpoint. (If there are an even number of
+      decisions, the median is calculated by averaging the two midpoint values.) While both values
+      are useful, you may find that the median provides a more accurate picture of a judge’s typical
+      turnaround times, as unusual outliers can skew the results when calculating an average.
+    </div>
+  </div>
+</div>
+
+
+<?php if ($this->preset) { ?>
+  <script>
+    $(document).ready(function (e) {
+      var settings = '<?= addslashes($this->settings); ?>';
+
+      if (settings.length > 0) {
+        // Render pagination
+        initialPagination();
+
+        // Show "Refine" button
+        $(gl.refine).show();
+        $(gl.close).hide();
+
+        // Hide Right panel
+        $(gl.rightPanel).hide();
+
+        // Show result
+        $(gl.reportContainer).show();
+
+        changeTitle('Decision Turnaround Time', dtTitle);
+        renderDecTatSelects();
+
+        var ranges = $('#dec-tat-ranges').val();
+        if (ranges.length > 0) {
+          ranges = JSON.parse(ranges);
+
+          makeGraph('dec-tat-chart', getDecTatGraphOptions(ranges));
+        }
+
+        settings = JSON.parse(settings);
+        if (typeof settings === 'object') {
+          $.each(settings, function(key, value) {
+            fields[key] = value;
+          });
+
+          if (settings.hearing_type) {
+            checkHearings(dt.hearings, settings);
+          }
+
+          getHearingDateRange(dt.hearRange, fields);
+          generateRangeCoverage($(dt.datePicker), fields.min_date, fields.max_date);
+          renderDate(
+              dt.datePicker,
+              fields.start_date,
+              fields.end_date,
+              fields.min_date,
+              fields.max_date
+          );
+        }
+      }
+
+    });
+  </script>
+<?php } ?>
+
+<script>
+  $(document).ready(function () {
+    $('.show-hide-next').click(function () {
+      $(this).next('div').toggleClass('hidden');
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    // Open new window with judge decisions
+    $('body').delegate('.open-judge', 'click', function () {
+      var judge = $(this);
+      var table = judge.closest('.result-table');
+
+      if (table.hasClass('disable')) {
+        return false;
+      }
+
+      var dates = getDatePickerDates(dt.datePicker);
+      var hearDates = getDatePickerDates(dt.hearRange);
+
+      var data = {
+        report_id: fields.report_id,
+        report_type: fields.report_type,
+        master: fields.master,
+        proceeding_category: getProceedingCategoryValue(dt),
+        proceeding_type: getProceedingTypeValue(dt),
+        proceeding_subtype: getProceedingSubTypeValue(dt),
+        case_tags: getCaseTagsValue(dt),
+        claim_type: getClaimTypeValue(dt),
+        hearing_type: getHearingTypeValue(dt),
+        hearing_subtype: getHearingSubTypeValue(dt),
+        hearing_mode: getHearingModeValue(dt),
+        party_type: getPartyTypeValue(dt),
+        individual_company: getIndividualCompanyValue(dt),
+        self: getSelfValue(dt),
+        appeals: getAppealsValue(dt),
+        court: $(dt.court).val(),
+        practice_area: $(dt.practice_area).val(),
+        outcome: getOutcomeValue(dt),
+        judge: judge.attr('data-judge'),
+        start_date: dates.start,
+        end_date: dates.end,
+        min_date: dates.min,
+        max_date: dates.max,
+        start_hear: hearDates.start,
+        end_hear: hearDates.end
+      }
+      
+      data = checkIncorrectValues(data);
+
+      var inputs = '';
+
+      $.each(data, function(k, v) {
+        inputs += '<input type="hidden" name="' + k + '" value="' + v + '">';
+      });
+      
+      var form = $('#form');
+      form.attr('action', '/report/dec-tat-decisions');
+      form.html(inputs);
+      form.submit();
+    });
+    
+  });
+</script>
