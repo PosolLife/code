@@ -5,11 +5,13 @@ Senior Web Developer
 
 Areas Of Profession
 ========================
-	More than 8	year of experience in software development. Created real-time web applications, complex front-end and back-end management
-	systems	including content management, e-commerce, games, chats,	customer relations and communication interfaces. The projects based on PHP
-	in conjunction with various other web development technologies. PHP(pure PHP, PHP with OOP, PHP with Zend framework and similar
-	frameworks), SQL(generic SQL, MySQL), JavaScript (generic JavaScript), JQuery, JQuery UI, AJAX, JSON, HTML, CSS and GIT are
-	used. Designed layouts and templates for various small companies and individuals.
+	More than 8 year of experience in software development. Created real-time web applications, 
+	complex front-end and back-end management systems including content management, e-commerce, 
+	games, chats, customer relations and communication interfaces. The projects based on PHP
+	in conjunction with various other web development technologies. PHP(pure PHP, PHP with OOP, 
+	PHP with Zend framework and similar frameworks), SQL(generic SQL, MySQL), JavaScript (generic JavaScript),
+	JQuery, JQuery UI, AJAX, JSON, HTML, CSS and GIT are used. Designed layouts and templates 
+	for various small companies and individuals.
 	I have worked in the following Areas: 
 	
 		* manager,	supplier and retailer registration forms 
