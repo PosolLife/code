@@ -6,6 +6,7 @@ use Zend\Db\Adapter\Adapter;
 
 use Zend\Db\Sql\Sql\Insert;
 
+
 class DataHandling
 {
     public $dbAdapter = null;

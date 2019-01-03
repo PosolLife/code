@@ -13,7 +13,7 @@ class Report
 
     protected $joinList = array();
 
-    // List of Case Law fields
+    /// List of Case Law fields
     protected $clFields = array(
         'outcome',
         'hearing_type',
