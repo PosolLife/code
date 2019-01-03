@@ -1,0 +1,83 @@
+<div class="col-xs-12 global-report-settings mb-30">
+  <div class="row">
+
+    <!-- Court -->
+    <div class="col-md-4 col-sm-6 col-xs-6 col-sm-mb-20">
+      <label class="field-tooltip required-row-star report-field-label" for="global-court-<?= $this->section_id; ?>"
+             data-tooltip="The court the decision belongs to">Court</label>
+      <select name="global-court" id="global-court-<?= $this->section_id; ?>" data-role="court"
+              class="form-control global-court drop-arrow"
+              data-selected="<?= ($this->selected && $this->selected->court_id) ? '1' : '0'; ?>">
+        
+
+        <?php foreach ($this->settings['state_courts'] as $state) { ?>
+
+        <optgroup label="<?= $state['name']; ?>">
+          <?php foreach ($state['courts'] as $id => $court) { ?>
+            <?php if ($this->selected && $this->selected->court_id == $id) { ?>
+              <option value="<?= $id; ?>" data-section="Court" selected><?= $court; ?></option>
+            <?php } else { ?>
+              <option value="<?= $id; ?>" data-section="Court"><?= $court; ?></option>
+            <?php } ?>
+          <?php } ?>
+        </optgroup>
+
+        <?php } ?>
+      </select>
+    </div>
+
+    <!-- Practice Area -->
+    <div class="col-md-4 col-sm-6 col-xs-6">
+      <label class="field-tooltip required-row-star report-field-label" for="global-practice-area-<?= $this->section_id; ?>"
+             data-tooltip="The area of law">Practice Area</label>
+      <select name="global-practice-area" id="global-practice-area-<?= $this->section_id; ?>" data-required="1"
+              data-role="practice-area" data-search="0" class="form-control global-practice-area"
+          <?= (!$this->selected || empty($this->settings['practice_area'])) ? 'disabled' : ''; ?>
+              data-selected="<?= ($this->selected && $this->selected->practice_area_id) ? '1' : '0'; ?>">
+        <?php if ($this->selected && $this->selected->court_id && !empty($this->settings['practice_area'])) { ?>
+          <?php foreach ($this->settings['practice_area'] as $id => $name) { ?>
+            <?php if ($this->selected && $this->selected->practice_area_id == $id) { ?>
+              <option value="<?= $id; ?>" data-section="Practice Area" selected><?= $name; ?></option>
+            <?php } else { ?>
+              <option value="<?= $id; ?>" data-section="Practice Area"><?= $name; ?></option>
+            <?php } ?>
+          <?php } ?>
+        <?php } ?>
+      </select>
+    </div>
+
+    <!-- Date Range -->
+    <div class="col-md-4 col-sm-6 col-xs-6 global-date-range" id="global-date-range-<?= $this->section_id; ?>"
+         data-full_date="<?= ($this->selected && $this->selected->full_date == 1) ? '1' : '0'; ?>">
+      <label class="field-tooltip required-row-star report-field-label date-range-label"
+             data-tooltip="The date that the decision was released">Choose a date range</label>
+
+      <div class="row date-range">
+        <div class="col-xs-6">
+          <span class="date-label">Start Date</span>
+          <input type="text" class="form-control" name="from" placeholder="From">
+        </div>
+        <div class="col-xs-6">
+          <span class="date-label">End Date</span>
+          <input type="text" class="form-control" name="to" placeholder="To">
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic string -->
+    <div class="global-string fs-13 col-xs-12 mt-10 hidden">
+      <div class="row">
+        <div class="col-sm-8 col-md-9">
+          For <span class="ds-practice-area"></span>
+          cases in the <span class="ds-court"></span>,
+          the current data coverage is from <span class="ds-date-start"></span>
+          to <span class="ds-date-end"></span>.
+        </div>
+        <div class="col-sm-4 col-md-3 text-right">
+          <b class="report-switch-date" data-datepicker="#global-date-range-<?= $this->section_id; ?>">
+            Use full available date range</b>
+        </div>
+      </div>
+    </div>
+  </div><!-- /row -->
+</div><!-- global-report-settings -->

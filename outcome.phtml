@@ -1,0 +1,464 @@
+<?php
+
+$win = array(
+    'outcome' => null,
+    'outcomeid' => null,
+    'numberHearing' => null,
+    'numberDecisions' => null
+);
+
+$loss = array(
+    'outcome' => null,
+    'outcomeid' => null,
+    'numberHearing' => null,
+    'numberDecisions' => null
+);
+
+$result = array();
+if ($this->result) {
+  foreach ($this->result as $key => $outcome) {
+
+
+    $outcomeName = $this->result[$key]['outcome'];
+    $result[$outcomeName] = $outcome;
+  }
+}
+
+?>
+
+<div class="left-body-cont result-wrapper">
+  <select multiple="multiple" name="dec_s_main_outcome2" id="dec_s_main_outcome2" style="display: none;">
+    <option value="0" data-section="All Available Options" data-index="0" selected="selected">All</option>
+  </select>
+
+  <div class="col-xs-12">
+    <b class="fs-20">Outcome Breakdown (<?= $this->total ? $this->total['heartotal'] : 0; ?> Hearings Found)</b>
+
+    <!-- Chart -->
+    <div id="hearing-outcome-chart">
+    </div>
+  </div>
+
+  <div class="col-xs-12 mb-20 text-left mt-20">
+    <i class="fs-13 clr-dark-grey">
+      For a list of decisions that match a particular outcome, click
+      the outcome name in the table below. To refine your search further, click on the "Refine Search"
+      button on the top right of the screen. Due to rounding, there may be situations where the
+      percentage total is greater than or less than 100%.
+    </i>
+  </div>
+
+  <div class="col-xs-12">
+    <div class="result-table-wrapper mt-5 mb-10">
+      <table class="table table-bordered result-table result-table-header outcome-list">
+        <thead class="tableWinLoss">
+        <tr>
+          <th>Outcome</th>
+          <th>Percentage Breakdown</th>
+          <th>Number of Hearings</th>
+          <th>Number of Decisions</th>
+          <!--  <th>Percentage of decisions</th> -->
+        </tr>
+        </thead>
+      </table>
+
+      <!-- Result -->
+      <table id="or-result" class="table table-bordered result-table outcome-list text-left">
+        <tbody class="decision_hearing_table">
+        <?php if (count($result) == 0) { ?>
+          <tr>
+            <td colspan="4" class="text-center">There were no records found for your search criteria.</td>
+          </tr>
+        <?php } else { ?>
+
+          <?php if (!empty($result['Win'])) { ?>
+            <?php $key = 'Win';
+            $win = $result[$key];
+
+            $hearing = round(($win['total'] / $this->total['total']) * 100, 2);
+            $hearing = number_format($hearing, 2, '.', '');
+            $percentName = str_replace(" ", "_", $key);
+
+            
+            ?>
+            <tr id="<?= $percentName; ?>" class="NoPdfModal" data-outcome="<?= $win['outcomeid']; ?>">
+              <td><span class="open-outcome"><?= $win['outcome']; ?></span></td>
+              <td class="text-right"
+                  data-total="<?= $this->total['total']; ?>"><?= $hearing; ?> %
+              </td>
+              <td class="text-right"><?= $win['numberHearing']; ?></td>
+              <td class="text-right"><?= $win['numberDecisions']; ?></td>
+            </tr>
+            <input type="hidden" class="<?= $percentName ?>_percent" name="" value="<?= $hearing; ?>">
+          <?php } ?>
+
+          <?php if (!empty($result['Loss'])) { ?>
+            <?php $key = 'Loss';
+            $loss = $result[$key];
+
+            $hearing = round(($loss['total'] / $this->total['total']) * 100, 2);
+            $hearing = number_format($hearing, 2, '.', '');
+            $percentName = str_replace(" ", "_", $key);
+
+            
+            ?>
+            <tr id="<?= $percentName; ?>" class="NoPdfModal" data-outcome="<?= $loss['outcomeid']; ?>">
+              <td><span class="open-outcome"><?= $loss['outcome']; ?></span></td>
+              <td class="text-right"
+                  data-total="<?= $this->total['total']; ?>"><?= $hearing; ?> %
+              </td>
+              <td class="text-right"><?= $loss['numberHearing']; ?></td>
+              <td class="text-right"><?= $loss['numberDecisions']; ?></td>
+            </tr>
+            <input type="hidden" class="<?= $percentName ?>_percent" name="" value="<?= $hearing; ?>">
+          <?php } ?>
+
+          <?php if (!empty($result['Split'])) { ?>
+            <?php $key = 'Split';
+            $split = $result[$key];
+
+            $hearing = round(($split['total'] / $this->total['total']) * 100, 2);
+            $hearing = number_format($hearing, 2, '.', '');
+            $percentName = str_replace(" ", "_", $key);
+
+            
+            ?>
+            <tr id="<?= $percentName; ?>" class="NoPdfModal" data-outcome="<?= $split['outcomeid']; ?>">
+              <td><span class="open-outcome"><?= $split['outcome']; ?></span></td>
+              <td class="text-right"
+                  data-total="<?= $this->total['total']; ?>"><?= $hearing; ?> %
+              </td>
+              <td class="text-right"><?= $split['numberHearing']; ?></td>
+              <td class="text-right"><?= $split['numberDecisions']; ?></td>
+            </tr>
+            <input type="hidden" class="<?= $percentName ?>_percent" name="" value="<?= $hearing; ?>">
+          <?php } ?>
+
+          <?php if (!empty($result['Order'])) { ?>
+            <?php $key = 'Order';
+            $order = $result[$key];
+
+            $hearing = round(($order['total'] / $this->total['total']) * 100, 2);
+            $hearing = number_format($hearing, 2, '.', '');
+            $percentName = str_replace(" ", "_", $key);
+
+            
+            ?>
+            <tr id="<?= $percentName; ?>" class="NoPdfModal" data-outcome="<?= $order['outcomeid']; ?>">
+              <td><span class="open-outcome"><span><?= $order['outcome']; ?></span></td>
+              <td class="text-right"
+                  data-total="<?= $this->total['total']; ?>"><?= $hearing; ?> %
+              </td>
+              <td class="text-right"><?= $order['numberHearing']; ?></td>
+              <td class="text-right"><?= $order['numberDecisions']; ?></td>
+            </tr>
+            <input type="hidden" class="<?= $percentName ?>_percent" name="" value="<?= $hearing; ?>">
+          <?php } ?>
+
+          <?php if (!empty($result['Addressed Obiter Dicta'])) { ?>
+            <?php $key = 'Addressed Obiter Dicta';
+            $addressed = $result[$key];
+
+            $hearing = round(($addressed['total'] / $this->total['total']) * 100, 2);
+            $hearing = number_format($hearing, 2, '.', '');
+            $percentName = str_replace(" ", "_", $key);
+
+            
+            ?>
+            <tr id="<?= $percentName; ?>" class="NoPdfModal" data-outcome="<?= $addressed['outcomeid']; ?>">
+              <td><span class="open-outcome"><?= $addressed['outcome']; ?></span></td>
+              <td class="text-right"
+                  data-total="<?= $this->total['total']; ?>"><?= $hearing; ?> %
+              </td>
+              <td class="text-right"><?= $addressed['numberHearing']; ?></td>
+              <td class="text-right"><?= $addressed['numberDecisions']; ?></td>
+            </tr>
+            <input type="hidden" class="<?= $percentName ?>_percent" name="" value="<?= $hearing; ?>">
+          <?php } ?>
+
+          <?php if (!empty($result['Not addressed'])) { ?>
+            <?php $key = 'Not addressed';
+            $notAddressed = $result[$key];
+
+            $hearing = round(($notAddressed['total'] / $this->total['total']) * 100, 2);
+            $hearing = number_format($hearing, 2, '.', '');
+            $percentName = str_replace(" ", "_", $key);
+
+            
+            ?>
+            <tr id="<?= $percentName; ?>" class="NoPdfModal" data-outcome="<?= $notAddressed['outcomeid']; ?>">
+              <td><span class="open-outcome"><span>Not Addressed</span></td>
+              <td class="text-right"
+                  data-total="<?= $this->total['total']; ?>"><?= $hearing; ?> %
+              </td>
+              <td class="text-right"><?= $notAddressed['numberHearing']; ?></td>
+              <td class="text-right"><?= $notAddressed['numberDecisions']; ?></td>
+            </tr>
+            <input type="hidden" class="<?= $percentName ?>_percent" name="" value="<?= $hearing; ?>">
+          <?php } ?>
+
+          <?php if (!empty($result['No Outcome'])) { ?>
+            <?php $key = 'No Outcome';
+            $noOutcome = $result[$key];
+
+            $hearing = round(($noOutcome['total'] / $this->total['total']) * 100, 2);
+            $hearing = number_format($hearing, 2, '.', '');
+            $percentName = str_replace(" ", "_", $key);
+
+            
+            ?>
+            <tr id="<?= $percentName; ?>" class="NoPdfModal" data-outcome="<?= $noOutcome['outcomeid']; ?>">
+              <td><span class="open-outcome"><span><?= $noOutcome['outcome']; ?></span></td>
+              <td class="text-right"
+                  data-total="<?= $this->total['total']; ?>"><?= $hearing; ?> %
+              </td>
+              <td class="text-right"><?= $noOutcome['numberHearing']; ?></td>
+              <td class="text-right"><?= $noOutcome['numberDecisions']; ?></td>
+            </tr>
+            <input type="hidden" class="<?= $percentName ?>_percent" name="" value="<?= $hearing; ?>">
+          <?php } ?>
+
+        <?php } ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-xs-12 mb-20 mt-10 text-left show-hide-next">
+    <i class="how-calc">+ How is this being calculated? (Click to expand/collapse)</i>
+  </div>
+
+  <div class="col-xs-12 hidden text-left">
+    <div class="mb-20">
+      The outcome breakdowns above are based on the results of hearings.
+      Some decisions include multiple hearings, which is why the number of hearings listed
+      for each outcome may be larger than the number of decisions.<br><br>
+      Hearing outcomes are weighted by the results for each individual party in a hearing.
+      For instance, if you ran a report looking for the outcomes of plaintiffs for a particular motion,
+      Loom might return five hearings with the following results:
+    </div>
+
+    <table class="table dark-table small-table-rows table-bordered">
+      <thead>
+      <tr>
+        <th>Hearing</th>
+        <th>Results</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tr>
+        <td>Hearing 1</td>
+        <td>Plaintiff Win</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Hearing 2</td>
+        <td>Plaintiff Win</td>
+        <td>Plaintiff Win</td>
+        <td>Plaintiff Loss</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Hearing 3</td>
+        <td>Plaintiff Loss</td>
+        <td>Plaintiff Split</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Hearing 4</td>
+        <td>Plaintiff Win</td>
+        <td>Plaintiff Win</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Hearing 5</td>
+        <td>Plaintiff Win</td>
+        <td>Plaintiff Loss</td>
+        <td>Plaintiff Loss</td>
+        <td>Plaintiff Loss</td>
+        <td>Plaintiff Loss</td>
+      </tr>
+    </table>
+
+    <p class="mt-20">
+      In the first hearing, there was only one plaintiff who won the hearing.
+      But in the second hearing, two plaintiffs won, but one lost.
+    </p>
+
+    <div class="mb-15"><b>Below is the math for the sample data set above:</b></div>
+
+    <div class="pl-30">
+      Total Number of Hearings = 5<br><br>
+      Hearing 1 Plaintiff Outcomes: (Win = 1.00)<br>
+      Hearing 2 Plaintiff Outcomes: (Win = 0.66, Loss = 0.33)<br>
+      Hearing 3 Plaintiff Outcomes: (Loss = 0.5, Split = 0.5)<br>
+      Hearing 4 Plaintiff Outcomes (Win = 1.00)<br>
+      Hearing 5 Plaintiff Outcomes(Win = 0.20, Loss = 0.80)<br><br>
+      Total outcome percentage:<br>
+      <b>Win</b> = (1.00 + 0.66 + 1.00 + 0.20)/5 * 100 = <b>57.2%</b><br>
+      <b>Loss</b> = (0.33 + 0.5 + 0.8)/5 * 100 = <b>32.6%</b><br>
+      <b>Split</b> = (0.5)/5 * 100 = <b>10%</b>
+    </div><br>
+
+    <p>In this instance, the percentage total adds up to 99.8%, with the missing 0.2% being
+      accounted for by rounding.</p>
+  </div>
+
+  <div class="col-xs-12 fs-13 clr-dark-grey text-left mb-20">
+    <i>The most recent decisions matching the outcomes 'Win' and 'Loss' for your
+      search are displayed below. To view additional recent decisions, click the
+      'See more' link below the table. Click on a decision name to open up a PDF
+      of the decision. To refine your search further, click on the "Refine Search"
+      button on the top right of the screen.</i>
+  </div>
+
+  <div class="col-xs-12">
+    <!-- Win Decisions -->
+    <?= $this->partial('report/templates/outcome-decisions', [
+        'decisionAccess' => $this->decisionAccess,
+        'result' => $this->win,
+        'outcome' => 'Win', 'outcomeId' => 2,
+        'decisions' => $win['numberDecisions'
+        ]]); ?>
+  </div>
+
+  <div class="col-xs-12">
+    <!-- Loss Decisions -->
+    <?= $this->partial('report/templates/outcome-decisions', [
+        'decisionAccess' => $this->decisionAccess,
+        'result' => $this->loss,
+        'outcome' => 'Loss',
+        'outcomeId' => 3,
+        'decisions' => $loss['numberDecisions'
+        ]]); ?>
+  </div>
+</div>
+
+<div class="mb-30"></div>
+
+<?php if ($this->preset) { ?>
+  <script>
+    $(document).ready(function (e) {
+      var settings = '<?= addslashes($this->settings); ?>';
+
+      if (settings.length > 0) {
+        // Render pagination
+        initialPagination();
+
+        // Show "Refine" button
+        $(gl.refine).show();
+        $(gl.close).hide();
+
+        // Hide Right panel
+        $(gl.rightPanel).hide();
+
+        // Show result
+        $(gl.reportContainer).show();
+
+        changeTitle('Outcome Report', orTitle);
+        renderOutcomeSelects();
+
+        settings = JSON.parse(settings);
+        if (typeof settings === 'object') {
+          $.each(settings, function(key, value) {
+            fields[key] = value;
+          });
+
+          if (settings.hearing_type) {
+            checkHearings(or.hearings, settings);
+          }
+
+          getHearingDateRange(or.hearRange, fields);
+          generateRangeCoverage($(or.datePicker), fields.min_date, fields.max_date);
+          renderDate(
+              or.datePicker,
+              fields.start_date,
+              fields.end_date,
+              fields.min_date,
+              fields.max_date
+          );
+
+          $(or.party_type).trigger('change');
+
+          makeGraph('hearing-outcome-chart', getOutcomeGraphOptions());
+        }
+      }
+
+    });
+  </script>
+<?php } ?>
+
+<script>
+  $(document).ready(function () {
+    $('.show-hide-next').click(function() {
+      $(this).next('div').toggleClass('hidden');
+    });
+
+    $('#or-result').find('.open-outcome').click(function (e) {
+      var row = $(this).closest('tr');
+      row.addClass('clr-grey');
+
+      if (row.text() != 'Total') {
+        var dates = getDatePickerDates(or.datePicker);
+        var hearDates = getDatePickerDates(or.hearRange);
+
+        var data = {
+          report_id: fields.report_id,
+          report_type: fields.report_type,
+          master: fields.master,
+          proceeding_category: getProceedingCategoryValue(or),
+          proceeding_type: getProceedingTypeValue(or),
+          proceeding_subtype: getProceedingSubTypeValue(or),
+          case_tags: getCaseTagsValue(or),
+          claim_type: getClaimTypeValue(or),
+          hearing_type: getHearingTypeValue(or),
+          hearing_subtype: getHearingSubTypeValue(or),
+          hearing_mode: getHearingModeValue(or),
+          party_type: getPartyTypeValue(or),
+          individual_company: getIndividualCompanyValue(or),
+          self: getSelfValue(or),
+          appeals: getAppealsValue(or),
+          state: $(or.state).val(),
+          court: $(or.court).val(),
+          practice_area: $(or.practice_area).val(),
+          judge: filterData(or.judge),
+          start_date: dates.start,
+          end_date: dates.end,
+          min_date: dates.min,
+          max_date: dates.max,
+          start_hear: hearDates.start,
+          end_hear: hearDates.end,
+          hearing_decision: ($('input[name="share_same_outcome"]:checked').val()) ? 1 : 0,
+          moving_party: $(or.moving_party).val(),
+          outcome: filterData('#dec_s_main_outcome2'),
+          outcome_name: $(this).text(),
+          outcome_id: row.closest('tr').attr('data-outcome')
+        }
+
+        data = checkIncorrectValues(data);
+
+        var inputs = '';
+        $.each(data, function(k, v) {
+          inputs += '<input type="hidden" name="' + k + '" value="' + v + '">';
+        });
+
+        var form = $('#form');
+        form.attr('action', '/report/outcome-decisions');
+        form.html(inputs);
+        form.submit();
+      }
+
+    });
+  });
+</script>

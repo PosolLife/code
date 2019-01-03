@@ -1,0 +1,37 @@
+<?php if ($this->single) { ?>
+  <option value="0" data-section="Judge Name" data-index="1" selected>All</option>
+<?php } ?>
+ 
+<?php foreach ($this->list as $row) { ?>
+  <?php if (!$row['judge']) { continue; } // Skip null result ?>
+
+  <?php
+  if (is_array($this->selected)) {
+    $selected = (in_array($row['cj_id'], $this->selected)) ? 'selected' : '';
+  } else {
+    $selected = ($row['cj_id'] == $this->selected) ? 'selected' : '';
+  }
+
+  $decisions = '';
+  if (isset($row['decisions'])) {
+    $decisions = '[' . $row['decisions'] . ']';
+  }
+  ?>
+    
+  <?php if ($row['cj_id'] == $this->judge) {  ?>
+  <option data-section="Judge Name" data-index="1" selected data-name="<?= $row['full']; ?>"
+          value="<?= $row['cj_id']; ?>"><?= $row['judge']; ?> <?= $decisions; ?></option>
+  <?php } else { ?>
+
+    <?php if ($this->onlySelected) { // add only selected options ?>
+      <?php if ($selected) { ?>
+        <option data-section="Judge Name" data-index="1" selected data-name="<?= $row['full']; ?>"
+                value="<?= $row['cj_id']; ?>"><?= $row['judge']; ?> <?= $decisions; ?></option>
+      <?php } ?>
+    <?php } else { ?>
+      <option data-section="Judge Name" data-index="1" <?= $selected; ?> data-name="<?= $row['full']; ?>"
+              value="<?= $row['cj_id']; ?>"><?= $row['judge']; ?> <?= $decisions; ?></option>
+    <?php } ?>
+
+  <?php } ?>
+<?php } ?>
